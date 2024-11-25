@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Upload, X } from "lucide-react";
 
-const FileUpload = () => {
+const FileUpload = ({ files, setFiles }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [files, setFiles] = useState([]);
+  // const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
 
   const handleDragEnter = (e) => {
