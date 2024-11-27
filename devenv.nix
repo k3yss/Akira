@@ -13,12 +13,13 @@
   languages.python.venv.requirements = "
 		flask
 		flask-cors
-    nltk
-    gensim
-    beautifulsoup4
-    scikit-learn
-    networkx
-    numpy
+		nltk
+		gensim
+		beautifulsoup4
+		scikit-learn
+		networkx
+		numpy
+		markdown
 	";
   processes = {
     backend.exec = "python akira-backend/main.py";

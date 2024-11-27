@@ -1,13 +1,9 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
-import networkx as nx
-from collections import defaultdict
 import numpy as np
-import os
 import nltk
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-import re
 
 
 class TopicExtractor:
