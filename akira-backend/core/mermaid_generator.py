@@ -14,6 +14,9 @@ class TopicConnector:
         connections = defaultdict(list)
         files = list(self.file_topics.keys())
 
+        if len(files) < 2:
+            return connections
+
         for i, file1 in enumerate(files):
             for file2 in files[i + 1]:
                 topics1 = self.file_topics[file1]["topics"]
@@ -49,8 +52,8 @@ class MermaidGenerator:
         """
         Generate mindmap showing file topics and connections
         """
-        diagram_parts = ["mindmap"]
-        diagram_parts.append("root[Topic Analysis]")
+        diagram_parts = ["mindmap\n"]
+        diagram_parts.append("root[Topic Analysis]\n")
 
         for filename, data in file_topics.items():
             clean_filename = self.clean_topic(filename)
@@ -58,10 +61,10 @@ class MermaidGenerator:
 
             for topic in data["topics"]:
                 cleaned_topic = self.clean_topic(topic)
-                diagram_parts.append(cleaned_topic)
+                diagram_parts.append(f"{cleaned_topic}\n")
 
         if connections:
-            diagram_parts.append("connections[Related Topics]")
+            diagram_parts.append("connections[Related Topics]\n")
             added_connections = set()
 
             for topic, topic_connections in connections.items():
@@ -72,7 +75,7 @@ class MermaidGenerator:
 
                     conn_pair = tuple(sorted([clean_topic1, clean_topic2]))
                     if conn_pair not in added_connections:
-                        diagram_parts.append(f"{clean_topic1} --- {clean_topic2}")
+                        diagram_parts.append(f"{clean_topic1} --- {clean_topic2}\n")
                         added_connections.add(conn_pair)
 
         return " ".join(diagram_parts)
