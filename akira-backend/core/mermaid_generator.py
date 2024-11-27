@@ -18,7 +18,7 @@ class TopicConnector:
             return connections
 
         for i, file1 in enumerate(files):
-            for file2 in files[i + 1]:
+            for file2 in files[i + 1 :]:
                 topics1 = self.file_topics[file1]["topics"]
                 topics2 = self.file_topics[file2]["topics"]
 
@@ -37,6 +37,7 @@ class TopicConnector:
                             }
                             connections[topic1].append(connection)
                             connections[topic2].append(connection)
+        print(f"Connections: {connections}")
         return connections
 
 
@@ -78,4 +79,4 @@ class MermaidGenerator:
                         diagram_parts.append(f"{clean_topic1} --- {clean_topic2}\n")
                         added_connections.add(conn_pair)
 
-        return " ".join(diagram_parts)
+        return "\n".join(diagram_parts)
