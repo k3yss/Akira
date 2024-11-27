@@ -32,7 +32,7 @@ def upload():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("analyze/", methods=["GET"])
+@app.route("/analyze", methods=["GET"])
 def analyze():
     try:
         file_handler = FileHandler()
