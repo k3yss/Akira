@@ -1,4 +1,3 @@
-from networkx import exception
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
@@ -6,6 +5,10 @@ import base64
 from core.file_handling import FileHandler
 from core.extraction import TopicExtractor
 from core.mermaid_generator import TopicConnector, MermaidGenerator
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
@@ -47,7 +50,8 @@ def analyze():
 
         file_topics = {}
         for filename, content in processed_files.items():
-            topics, scores = topic_extractor.extract_topics(content)
+            topics = topic_extractor.extract_topics(content)
+            scores = topic_extractor.get_topic_scores(content)
             topic_connector.add_file_topics(filename, topics, dict(scores))
             file_topics[filename] = {"topics": topics, "scores": dict(scores)}
 
@@ -77,4 +81,8 @@ def cleanup(response):
 
 
 if __name__ == "__main__":
+    nltk.download("punkt")
+    nltk.download("stopwords")
+    nltk.download("wordnet")
+    nltk.download("averaged_perceptron_tagger")
     app.run(debug=True)

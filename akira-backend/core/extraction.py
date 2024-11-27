@@ -12,10 +12,6 @@ import re
 
 class TopicExtractor:
     def __init__(self) -> None:
-        nltk.download("punkt")
-        nltk.download("stopwords")
-        nltk.download("wordnet")
-        nltk.download("averaged_perceptron_tagger")
 
         self.lemmatizer = WordNetLemmatizer()
         self.stop_words = set(stopwords.words("english"))

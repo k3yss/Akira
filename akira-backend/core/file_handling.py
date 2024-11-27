@@ -74,6 +74,7 @@ class FileHandler:
             processed_files[filename] = cleaned_text
 
         self.processed_files = processed_files
+        print(processed_files)
         return processed_files
 
     def get_file_content(self, filename):
