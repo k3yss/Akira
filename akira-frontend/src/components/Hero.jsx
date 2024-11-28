@@ -28,7 +28,7 @@ const Hero = () => {
           <p className="text-xl text-gray-300 mb-8 max-w-2xl">
             Transform your markdown notes into beautiful mind maps. Connect
             ideas, visualize relationships, and boost your productivity by 10x
-            with AI-powered knowledge graphs.
+            with knowledge graphs.
           </p>
 
           {/* Email Signup */}
@@ -58,8 +58,7 @@ const Hero = () => {
                 AI-Powered Insights
               </h3>
               <p className="text-gray-400">
-                Discover hidden connections and patterns in your notes with
-                advanced AI
+                Discover hidden connections and patterns in your notes
               </p>
             </div>
 
@@ -75,15 +74,6 @@ const Hero = () => {
         </div>
 
         {/* Placeholder for Graph Visualization */}
-        <div className="mt-16 bg-gray-800/30 rounded-2xl border border-gray-700 aspect-video max-w-4xl mx-auto overflow-hidden">
-          <div className="w-full h-full flex items-center justify-center">
-            <img
-              src="/api/placeholder/800/450"
-              alt="Mind map visualization"
-              className="rounded-lg opacity-75"
-            />
-          </div>
-        </div>
       </main>
     </div>
   );

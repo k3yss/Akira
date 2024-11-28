@@ -53,19 +53,23 @@ class MermaidGenerator:
         """
         Generate mindmap showing file topics and connections
         """
-        diagram_parts = ["mindmap\n"]
-        diagram_parts.append("root[Topic Analysis]\n")
+        diagram_parts = ["mindmap"]
+
+        # Add root with proper indentation
+        diagram_parts.append("  root((Topic Analysis))")
 
         for filename, data in file_topics.items():
             clean_filename = self.clean_topic(filename)
-            diagram_parts.append(f"{clean_filename}[File: {filename}]")
+            # Add file as a main branch
+            diagram_parts.append(f"    {clean_filename}[{filename}]")
 
+            # Add topics as sub-branches with proper indentation
             for topic in data["topics"]:
                 cleaned_topic = self.clean_topic(topic)
-                diagram_parts.append(f"{cleaned_topic}\n")
+                diagram_parts.append(f"      {cleaned_topic}({topic})")
 
         if connections:
-            diagram_parts.append("connections[Related Topics]\n")
+            diagram_parts.append("    connections((Related Topics))")
             added_connections = set()
 
             for topic, topic_connections in connections.items():
@@ -76,7 +80,8 @@ class MermaidGenerator:
 
                     conn_pair = tuple(sorted([clean_topic1, clean_topic2]))
                     if conn_pair not in added_connections:
-                        diagram_parts.append(f"{clean_topic1} --- {clean_topic2}\n")
+                        # Add connection with proper syntax
+                        diagram_parts.append(f"      {clean_topic1} --- {clean_topic2}")
                         added_connections.add(conn_pair)
 
         return "\n".join(diagram_parts)
