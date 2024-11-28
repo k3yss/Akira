@@ -51,37 +51,41 @@ class MermaidGenerator:
 
     def create_mindmap(self, file_topics, connections):
         """
-        Generate mindmap showing file topics and connections
+        Generate hierarchical mindmap with properly connected shared topics
         """
         diagram_parts = ["mindmap"]
-
-        # Add root with proper indentation
         diagram_parts.append("  root((Topic Analysis))")
 
+        # Track shared topics
+        topic_occurrences = defaultdict(list)
         for filename, data in file_topics.items():
+            for topic in data["topics"]:
+                topic_occurrences[topic].append(filename)
+
+        # Add file nodes first
+        for filename in file_topics.keys():
             clean_filename = self.clean_topic(filename)
-            # Add file as a main branch
             diagram_parts.append(f"    {clean_filename}[{filename}]")
 
-            # Add topics as sub-branches with proper indentation
-            for topic in data["topics"]:
+            # Add topics under each file
+            file_data = file_topics[filename]
+            for topic in file_data["topics"]:
                 cleaned_topic = self.clean_topic(topic)
-                diagram_parts.append(f"      {cleaned_topic}({topic})")
+                # If topic appears in multiple files, add it with a unique identifier
+                if len(topic_occurrences[topic]) > 1:
+                    node_id = f"{cleaned_topic}_{clean_filename}"
+                    diagram_parts.append(f"      {node_id}({topic})")
+                else:
+                    # For non-shared topics, add them directly
+                    diagram_parts.append(f"      {cleaned_topic}({topic})")
 
-        if connections:
-            diagram_parts.append("    connections((Related Topics))")
-            added_connections = set()
-
-            for topic, topic_connections in connections.items():
-                for conn in topic_connections:
-                    topic1, topic2 = conn["topics"]
-                    clean_topic1 = self.clean_topic(topic1)
-                    clean_topic2 = self.clean_topic(topic2)
-
-                    conn_pair = tuple(sorted([clean_topic1, clean_topic2]))
-                    if conn_pair not in added_connections:
-                        # Add connection with proper syntax
-                        diagram_parts.append(f"      {clean_topic1} --- {clean_topic2}")
-                        added_connections.add(conn_pair)
+        # Add connections for shared topics
+        for topic, files in topic_occurrences.items():
+            if len(files) > 1:
+                cleaned_topic = self.clean_topic(topic)
+                # Create connections between shared topic nodes
+                file_nodes = [f"{cleaned_topic} - {self.clean_topic(f)}" for f in files]
+                for i in range(len(file_nodes) - 1):
+                    diagram_parts.append(f"    {file_nodes[i]} --- {file_nodes[i + 1]}")
 
         return "\n".join(diagram_parts)

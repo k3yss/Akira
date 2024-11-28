@@ -96,18 +96,19 @@ def analyze():
     }
 
 
-# @app.after_request
-# def cleanup(response):
-#     """Cleanup uploaded files after successfully processing"""
-#     try:
-#         if request.endpoint in ["upload", "analyze"] and response.status_code == 200:
-#             for filename in os.listdir(UPLOAD_FOLDER):
-#                 file_path = os.path.join(UPLOAD_FOLDER, filename)
-#                 if os.path.isfile(file_path):
-#                     os.remove(file_path)
-#     except Exception as e:
-#         print(f"Error during cleanup: {e}")
-#     return response
+@app.after_request
+def cleanup(response):
+    """Cleanup uploaded files after successfully processing"""
+    try:
+        if request.endpoint in ["upload", "analyze"] and response.status_code == 200:
+            for filename in os.listdir(UPLOAD_FOLDER):
+                file_path = os.path.join(UPLOAD_FOLDER, filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+    except Exception as e:
+        print(f"Error during cleanup: {e}")
+    return response
+
 
 if __name__ == "__main__":
     nltk.download("punkt")

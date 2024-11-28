@@ -36,7 +36,7 @@ class TopicExtractor:
                 processed_sentences.append(" ".join(tokens))
         return processed_sentences
 
-    def extract_topics(self, text, min_score_percentile=75):
+    def extract_topics(self, text, min_score_percentile=85):
         """
         Extract topics from text using TF-ID scores
         """
